@@ -67,9 +67,9 @@ describe('app routes', () => {
 
   it('gets all recipes', async() => {
     const recipes = await Recipe.create([
-      { name: 'cookies', directions: [] },
-      { name: 'cake', directions: [] },
-      { name: 'pie', directions: [] }
+      { name: 'cookies', directions: [], ingredients: [] },
+      { name: 'cake', directions: [], ingredients: [] },
+      { name: 'pie', directions: [], ingredients: [] }
     ]);
 
     return request(app)
@@ -78,7 +78,10 @@ describe('app routes', () => {
         recipes.forEach(recipe => {
           expect(res.body).toContainEqual({
             _id: recipe._id.toString(),
-            name: recipe.name
+            name: recipe.name,
+            directions: [],
+            ingredients: [],
+            __v: 0
           });
         });
       });
@@ -100,7 +103,7 @@ describe('app routes', () => {
           _id: recipe._id.toString(),
           name: 'cookies',
           directions: [],
-          ingredients: [{ 
+          ingredients: [{
             name: 'salt',
             amount: 56,
             measurement: 'cup',
