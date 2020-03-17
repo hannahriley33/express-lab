@@ -6,6 +6,7 @@ const connect = require('../lib/utils/connect');
 const mongoose = require('mongoose');
 const Recipe = require('../lib/models/Recipe');
 
+
 // create recipe
 // get all recipes
 // find recipe by id
@@ -35,7 +36,13 @@ describe('app routes', () => {
           'mix ingredients',
           'put dough on cookie sheet',
           'bake for 10 minutes'
-        ]
+        ],
+        ingredients: [{
+          name: 'salt',
+          amount: 56,
+          measurement: 'cup' 
+        }]
+
       })
       .then(res => {
         expect(res.body).toEqual({
@@ -46,7 +53,13 @@ describe('app routes', () => {
             'mix ingredients',
             'put dough on cookie sheet',
             'bake for 10 minutes'
-          ],
+          ], 
+          ingredients: [{ 
+            name: 'salt',
+            amount: 56,
+            measurement: 'cup',
+            _id: expect.any(String)
+          }],
           __v: 0
         });
       });
@@ -73,7 +86,13 @@ describe('app routes', () => {
 
   it('gets a recipe by id', async() => {
     const recipe = await Recipe.create({ 
-      name: 'cookies', directions: [] });
+      name: 'cookies', directions: [], 
+      ingredients: [{ 
+        name: 'salt',
+        amount: 56,
+        measurement: 'cup'
+      }] 
+    });
     return request(app)
       .get(`/api/v1/recipes/${recipe._id}`)
       .then(res => {
@@ -81,6 +100,12 @@ describe('app routes', () => {
           _id: recipe._id.toString(),
           name: 'cookies',
           directions: [],
+          ingredients: [{ 
+            name: 'salt',
+            amount: 56,
+            measurement: 'cup',
+            _id: expect.any(String)
+          }],
           __v: 0
         });
       });
@@ -88,7 +113,13 @@ describe('app routes', () => {
 
   it('deletes a recipe by id', async() => {
     const recipe2 = await Recipe.create({ 
-      name: 'cookies', directions: [] });
+      name: 'cookies', directions: [],  
+      ingredients: [{ 
+        name: 'salt',
+        amount: 56,
+        measurement: 'cup'
+      }]
+    });
     
     return request(app)
       .delete(`/api/v1/recipes/${recipe2._id}`)
@@ -97,6 +128,11 @@ describe('app routes', () => {
           _id: recipe2._id.toString(),
           name: 'cookies',
           directions: [],
+          ingredients: [{ name: 'salt',
+            amount: 56,
+            measurement: 'cup',
+            _id: expect.any(String)
+          }],
           __v: 0
         });
       });
@@ -112,6 +148,11 @@ describe('app routes', () => {
         'put dough on cookie sheet',
         'bake for 10 minutes'
       ],
+      ingredients: [{ 
+        name: 'salt',
+        amount: 56,
+        measurement: 'cup'
+      }]
     });
 
 
@@ -128,6 +169,12 @@ describe('app routes', () => {
             'put dough on cookie sheet',
             'bake for 10 minutes'
           ],
+          ingredients: [{ 
+            name: 'salt',
+            amount: 56,
+            measurement: 'cup',
+            _id: expect.any(String)
+          }],
           __v: 0
         });
       });
